@@ -1,19 +1,17 @@
 #!/usr/bin/env python
 #
 # Initialise a modem connection, answer an incoming call and redirect data from the modem to a TCP/IP connection and vice versa.
-# (c) 2019 Steve Crozier
+# (c) 2019 Steve Crozier CC BY-SA license
 # based on/kudos to tcp_serial_redirect.py from Chris Liechti
 #
 # example usage...
-# python modem-tcp.py /dev/ttyACM0 bbs.combatnet.us:23 115200
-
+# python modem-tcp.py /dev/ttyACM0 a80sappleiibbs.ddns.net:6502
 
 import sys
 import socket
 import serial
 import serial.threaded
 import time
-
 
 class SerialToNet(serial.threaded.Protocol):
     """serial->socket"""
@@ -34,8 +32,7 @@ if __name__ == '__main__':  # noqa
     parser = argparse.ArgumentParser(
         description='Simple Hayes modem handler and network (TCP/IP) redirector.',
         epilog="""\
-NOTE: no security measures are implemented. Anyone can remotely connect
-to this service over the network.
+NOTE: no security measures are implemented.
 """)
 
     parser.add_argument(
@@ -45,7 +42,7 @@ to this service over the network.
     parser.add_argument(
         'HOST',
         help='telnet BBS host address/IP:port number')
-        
+
     parser.add_argument(
         'BAUDRATE',
         type=int,
@@ -149,9 +146,9 @@ to this service over the network.
     sys.stderr.write("> " + ser.readline())
     sys.stderr.write("> " + ser.readline())
     time.sleep(0.5)
-    
+
     sys.stderr.write("--Waiting for ring--\r\n")
-    
+
     # Add a loop here to wait for ring interrupt
     try:
         while ser.ri == False:
@@ -166,8 +163,8 @@ to this service over the network.
     sys.stderr.write('--Answering ring--\r\n')
     ser.write(b'ATA\r\n')
     sys.stderr.write("> " + ser.readline())
-    
-    
+
+
     # Loop to wait for 'CONNECT'
     while True:
         recstring=ser.readline()
@@ -175,7 +172,7 @@ to this service over the network.
         if 'CONNECT' in recstring:
             break
 
-    # Delay to make sure modem is happy    
+    # Delay to make sure modem is happy
     time.sleep(2)
 
     ser_to_net = SerialToNet()
@@ -232,7 +229,7 @@ to this service over the network.
     except KeyboardInterrupt:
         pass
 
-    
+
     serial_worker.stop()
     time.sleep(1)
 
@@ -243,4 +240,4 @@ to this service over the network.
     ser.write(b'ATH\r\n')
 
     sys.stderr.write('\n--- exit ---\n')
-    
+

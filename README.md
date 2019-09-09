@@ -10,7 +10,7 @@ Usage: modem-tcp.py [-h] [-q] [--develop] [--bytesize {5,6,7,8}]
 Noting that HOST should be in the format Hostname:Portnumber
 Typically a USB modem will appear to the Pi as /dev/ttyACM0 but check for correct detection with lsusb then ls /dev/tty*
 
-Example usage: python modem-tcp.py /dev/ttyACM0 bbs.combatnet.us:23
+Example usage: python modem-tcp.py /dev/ttyACM0 a80sappleiibbs.ddns.net:6502
 
 For a good list of telnet BBS's see https://www.telnetbbsguide.com/
 
